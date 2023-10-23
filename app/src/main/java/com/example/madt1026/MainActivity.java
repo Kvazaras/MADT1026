@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         //SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
         //Current
+        //Location of file: /data/data/com.example.madt1026
         SharedPreferences sharedPref = this.getSharedPreferences(Constants.NOTES_FILE, this.MODE_PRIVATE);
         String lastSavedNote = sharedPref.getString(Constants.NOTE_KEY, "NA");
         String lastSavedNoteDate = sharedPref.getString(Constants.NOTE_KEY_DATE, "1900-01-01");
@@ -87,7 +88,5 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
 }
 
