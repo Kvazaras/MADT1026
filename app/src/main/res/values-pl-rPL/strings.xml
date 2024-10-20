@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">MADT1026</string>
     <string name="add_note">Add note in Polish</string>
+    <string name="save_and_close">PolishClose</string>
 </resources>

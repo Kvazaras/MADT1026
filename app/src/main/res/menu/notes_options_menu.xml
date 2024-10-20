@@ -8,4 +8,6 @@
     android:title="@string/update_note"/>
 <item android:id="@+id/dunno"
     android:title="@string/dunno"/>
+<item android:id="@+id/hardcoded"
+      android:title="hardcoded"/>
 </menu>
