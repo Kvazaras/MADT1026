@@ -4,10 +4,8 @@
     android:title="@string/add_note"/>
 <item android:id="@+id/remove_note"
     android:title="@string/remove_note"/>
-<item android:id="@+id/update_note"
-    android:title="@string/update_note"/>
-<item android:id="@+id/dunno"
-    android:title="@string/dunno"/>
-<item android:id="@+id/hardcoded"
-      android:title="hardcoded"/>
+<item android:id="@+id/read_from_db"
+    android:title="@string/read_from_db"/>
+<item android:id="@+id/read_from_file"
+      android:title="@string/read_from_file"/>
 </menu>

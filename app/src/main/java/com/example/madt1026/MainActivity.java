@@ -1,8 +1,6 @@
 package com.example.madt1026;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,18 +11,16 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.snackbar.Snackbar;
+import com.example.madt1026.sourcemanagers.DatabaseManager;
+import com.example.madt1026.sourcemanagers.FileManager;
+import com.example.madt1026.sourcemanagers.SharedPrefsManager;
+import com.example.madt1026.sourcemanagers.room.Note;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
-
-    // Copilot -> Tab /Alt [ or ] and then Enter
     ArrayList<String> listNoteItems = new ArrayList<>();
     ArrayAdapter<String> adapter;
     ListView lvNotes;
@@ -42,35 +38,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        //Deprecated
-        //SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
-        //Current
-        //Location of file: /data/data/com.example.madt1026
-        SharedPreferences sharedPref = this.getSharedPreferences(Constants.NOTES_FILE, this.MODE_PRIVATE);
-
-        String lastSavedNote = sharedPref.getString(Constants.NOTE_KEY, "NA");
-        String lastSavedNoteDate = sharedPref.getString(Constants.NOTE_KEY_DATE, "1900-01-01");
-        Set<String> savedSet = sharedPref.getStringSet(Constants.NOTES_ARRAY_KEY, null);
-
+        Set<String> savedSet = SharedPrefsManager.readNotesFromSharedPrefs(this);
         if (savedSet != null) {
             this.listNoteItems.clear();
             this.listNoteItems.addAll(savedSet);
             this.adapter.notifyDataSetChanged();
         }
-
-        Snackbar.make(lvNotes, String.format("%s: %s", getString(R.string.msg_last_saved_note), lastSavedNote), Snackbar.LENGTH_LONG).show();
-        Toast.makeText(this, lastSavedNoteDate, Toast.LENGTH_LONG).show();
-
-        //In case You will need to append/remove values from array:
-        //https://stackoverflow.com/questions/9648236/android-listview-not-updating-after-a-call-to-notifydatasetchanged
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.notes_options_menu, menu);
-        //inflater.inflate(R.menu.secondary_options_menu, menu);
         return true;
     }
 
@@ -82,12 +62,17 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
                 return true;
             case R.id.remove_note:
+                Toast.makeText(getApplicationContext(), "Not implemented", Toast.LENGTH_LONG).show();
                 return true;
-            case R.id.update_note:
-                Toast.makeText(getApplicationContext(), R.string.msg_updated_clicked, Toast.LENGTH_LONG).show();
+            case R.id.read_from_db:
+                List<Note> notesFromDb = DatabaseManager.readNotesFromDatabase(this);
+                if(!notesFromDb.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), notesFromDb.get(0).noteName, Toast.LENGTH_LONG).show();
+                }
                 return true;
-            case R.id.dunno:
-                Toast.makeText(getApplicationContext(), R.string.msg_dunno_clicked, Toast.LENGTH_LONG).show();
+            case R.id.read_from_file:
+                String noteFromFile = FileManager.readStringFromFile(this);
+                Toast.makeText(getApplicationContext(), noteFromFile, Toast.LENGTH_LONG).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
